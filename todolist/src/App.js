@@ -3,11 +3,7 @@ import "./App.css";
 import User from "./components/User";
 
 const App = () => {
-  const [todos, setTodos] = useState([
-    { id: 0, title: "", content: "", isDone: false },
-  ]);
-
-  const [doneTodo, setDoneTodo] = useState([]);
+  const [todos, setTodos] = useState([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -19,7 +15,7 @@ const App = () => {
     setContent(e.target.value);
   };
 
-  // 추가 버튼 클릭
+  // 추가 버튼
   const clickAddButtonHanler = () => {
     const newTodos = {
       id: todos.length + 1,
@@ -32,40 +28,26 @@ const App = () => {
     setContent("");
   };
 
-  // 완료 버튼
-  const clickFinishButtonHanler = (id) => {
-    const newDoneTodos = {
-      id: doneTodo.length + 1,
-      title,
-      content,
-      isDone: true,
-    };
-    setDoneTodo([...doneTodo, newDoneTodos]);
-    setTodos(todos.filter((todo) => todo.id !== id));
-  };
-
   // 삭제 버튼
   const clickRemoveButtonHanler = (id) => {
     const newTodos = todos.filter((todo) => todo.id !== id);
     setTodos(newTodos);
   };
 
-  // 완료 삭제 버튼
-  const doneclickRemoveButtonHanler = (id) => {
-    const newDoneTodos = doneTodo.filter((todo) => todo.id !== id);
-    setDoneTodo(newDoneTodos);
-  };
-
-  // 완료 취소 버튼
-  const cancelFinishButtonHanler = (id) => {
-    const newTodos = {
-      id: todos.length + 1,
-      title,
-      content,
-      isDone: false,
-    };
-    setTodos([...todos, newTodos]);
-    setDoneTodo(doneTodo.filter((todo) => todo.id !== id));
+  // 토글
+  const clickToggleButtonHandler = (id) => {
+    // map을 쓰면 아주 깔끔하게 해결됨
+    const newTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          isDone: !todo.isDone,
+        };
+      }
+      return todo;
+    });
+    // todos를 newTodos의 값으로 바꾼다.
+    setTodos(newTodos);
   };
 
   return (
@@ -96,27 +78,32 @@ const App = () => {
       <h2 className="list-title">Working.. 🔥 </h2>
       <div className="list-wrapper">
         {todos.map(function (item) {
-          return (
-            <User
-              key={item.id}
-              item={item}
-              finishFunction={clickFinishButtonHanler}
-              removeFunction={clickRemoveButtonHanler}
-            />
-          );
+          if (!item.isDone) {
+            return (
+              <User
+                key={item.id}
+                item={item}
+                removeFunction={clickRemoveButtonHanler}
+                clickToggleButtonHandler={clickToggleButtonHandler}
+              />
+            );
+          }
         })}
       </div>
+
       <h2 className="list-title">Done..! ☑️ </h2>
       <div className="list-wrapper">
-        {doneTodo.map(function (item) {
-          return (
-            <User
-              key={item.id}
-              item={item}
-              doneRemoveFunction={doneclickRemoveButtonHanler}
-              cancelFunction={cancelFinishButtonHanler}
-            />
-          );
+        {todos.map(function (item) {
+          if (item.isDone) {
+            return (
+              <User
+                key={item.id}
+                item={item}
+                removeFunction={clickRemoveButtonHanler}
+                clickToggleButtonHandler={clickToggleButtonHandler}
+              />
+            );
+          }
         })}
       </div>
     </div>
