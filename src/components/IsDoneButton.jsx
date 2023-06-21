@@ -1,4 +1,4 @@
-const User = ({ item, removeFunction, clickToggleButtonHandler }) => {
+const IsDoneButton = ({ item, removeFunction, clickToggleButtonHandler }) => {
   return (
     <div key={item.id} className="todo-container">
       <h2 className="todo-title">{item.title}</h2>
@@ -8,7 +8,7 @@ const User = ({ item, removeFunction, clickToggleButtonHandler }) => {
           className="todo-delete-button button"
           onClick={() => removeFunction(item.id)}
         >
-          삭제하기
+          삭제
         </button>
         <button
           className="todo-complete-button button"
@@ -21,4 +21,4 @@ const User = ({ item, removeFunction, clickToggleButtonHandler }) => {
   );
 };
 
-export default User;
+export default IsDoneButton;
