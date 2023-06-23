@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState } from "react";
-import "../App.css";
 import uuid from "react-uuid";
+import "../App.css";
 import {
   addTodo,
   deleteTodo,
@@ -10,7 +10,71 @@ import {
 } from "../redux/modules/todo";
 import IsDoneButton from "../components/IsDoneButton";
 import { useNavigate } from "react-router-dom";
+import { styled } from "styled-components";
 
+// styled-components
+const LayOut = styled.div`
+  margin: 0 auto;
+  max-width: 1200px;
+  min-width: 800px;
+`;
+
+const Container = styled.div`
+  align-items: center;
+  border: 1px solid #ddd;
+  display: flex;
+  height: 50px;
+  justify-content: space-between;
+  padding: 0 20px;
+`;
+
+const AddForm = styled.div`
+  background-color: #eee;
+  border-radius: 12px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px;
+  gap: 20px;
+`;
+
+const InputGroup = styled.div`
+  align-items: center;
+  display: flex;
+  gap: 20px;
+`;
+
+const FormLabel = styled.div`
+  font-size: 16px;
+  font-weight: 700;
+`;
+
+const AddInput = styled.input`
+  height: 40px;
+  width: 240px;
+  border: none;
+  border-radius: 12px;
+  padding: 0 12px;
+`;
+
+const AddButton = styled.button`
+  border: none;
+  height: 40px;
+  border-radius: 10px;
+  background-color: teal;
+  width: 140px;
+  color: #fff;
+  font-weight: 700;
+`;
+
+const ListWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+`;
+
+// main
 const Home = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
@@ -48,11 +112,11 @@ const Home = () => {
   const dispatch = useDispatch();
 
   return (
-    <div className="layout">
-      <div className="container">
+    <LayOut>
+      <Container>
         <div>My Todo List</div>
         <div>React</div>
-      </div>
+      </Container>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -68,28 +132,21 @@ const Home = () => {
           setContent("");
         }}
       >
-        <div className="add-form">
-          <div className="input-group">
-            <label className="form-label">제목</label>
-            <input
-              className="add-input input-body"
-              value={title}
-              onChange={titleChangeHandler}
-            ></input>
-            <label className="form-label">내용</label>
-            <input
-              className="add-input"
+        <AddForm>
+          <InputGroup>
+            <FormLabel>제목</FormLabel>
+            <AddInput value={title} onChange={titleChangeHandler}></AddInput>
+            <FormLabel>내용</FormLabel>
+            <AddInput
               value={content}
               onChange={contentChangeHandler}
-            ></input>
-          </div>
-          <button className="add-button" type="submit">
-            추가하기
-          </button>
-        </div>
+            ></AddInput>
+          </InputGroup>
+          <AddButton type="submit">추가하기</AddButton>
+        </AddForm>
       </form>
-      <h2 className="list-title">Working.. 🔥 </h2>
-      <div className="list-wrapper">
+      <h2>Working.. 🔥 </h2>
+      <ListWrapper>
         {todos.map((item) => {
           if (!item.isDone) {
             return (
@@ -103,10 +160,10 @@ const Home = () => {
             );
           }
         })}
-      </div>
+      </ListWrapper>
 
-      <h2 className="list-title">Done..! ☑️ </h2>
-      <div className="list-wrapper">
+      <h2>Done..! ☑️ </h2>
+      <ListWrapper>
         {todos.map((item) => {
           if (item.isDone) {
             return (
@@ -120,8 +177,8 @@ const Home = () => {
             );
           }
         })}
-      </div>
-    </div>
+      </ListWrapper>
+    </LayOut>
   );
 };
 
