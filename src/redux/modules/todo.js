@@ -2,7 +2,7 @@
 const ADD_TODO = "addTodo";
 const DELETE_TODO = "deleteTodo";
 const TOGGLE_STATUS_TODO = "toggleStatusTodo";
-// const GET_TODO_BY_ID = "getTodoById";
+const GET_TODO = "getTodoById";
 
 // action creator
 export const addTodo = (payload) => {
@@ -26,9 +26,16 @@ export const toggleStatusTodo = (id) => {
   };
 };
 
+export const getTodoById = (id) => {
+  return {
+    type: GET_TODO,
+    id,
+  };
+};
+
 const initialState = { todos: [] };
 
-// Redux
+// 리듀서
 const todo = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TODO: {
@@ -40,7 +47,6 @@ const todo = (state = initialState, action) => {
       };
     }
     case TOGGLE_STATUS_TODO: {
-      console.log(action);
       return {
         todos: state.todos.map((todo) => {
           if (todo.id === action.id) {
@@ -52,6 +58,9 @@ const todo = (state = initialState, action) => {
           return todo;
         }),
       };
+    }
+    case GET_TODO: {
+      return { todos: state.todos.filter((todo) => todo.id === action.id) };
     }
     default:
       return state;
